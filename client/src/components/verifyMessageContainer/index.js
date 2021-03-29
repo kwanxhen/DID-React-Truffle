@@ -47,6 +47,7 @@ const VerifyMessageContainer = () => {
             type="text"
             name="messageJwt"
             required
+            style={{ marginRight: "15px" }}
           />
           <Button type="submit" variant="contained" color="primary">
             Verify Message

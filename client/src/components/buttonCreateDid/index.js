@@ -39,6 +39,7 @@ const ButtonCreateDid = () => {
             type="text"
             name="alias"
             required
+            style={{ marginRight: "15px" }}
           />
           <Button type="submit" variant="contained" color="primary">
             Create Did

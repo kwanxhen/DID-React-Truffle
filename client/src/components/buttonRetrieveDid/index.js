@@ -37,6 +37,7 @@ const ButtonRetrieveDid = () => {
             type="text"
             name="retrieveAddress"
             required
+            style={{ marginRight: "15px" }}
           />
           <Button type="submit" variant="contained" color="secondary">
             Retrieve Did
