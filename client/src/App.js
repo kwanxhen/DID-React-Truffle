@@ -1,114 +1,17 @@
-import React, { useEffect, useState } from "react";
-import Web3 from "web3";
-import "./App.css";
-import SimpleStorageContract from "./contracts/SimpleStorage.json";
-import { createDID } from "./createDid";
+import { React, useEffect, useState } from "react";
+// import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import AppInit from './AppInit';
 
-function App() {
-  const [currentAccount, setCurrentAccount] = useState(null);
-  const [contract, setContract] = useState(null);
-  const [networkType, setNetworkType] = useState(null);
-  const [storageValue, setStorageValue] = useState(0);
-  const [did, setDid] = useState([]);
-
-  const privateKey =
-    "b7e2bf51463662888676e086fbadedc1b9a5a9a53f444d194cd485df163442c4";
-
-  //Initializing web3 object
-  let web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
-  console.log("this is Web3 givenProvider", Web3.givenProvider);
-
-  useEffect(() => {
-    getAccount().then((value) => {
-      setCurrentAccount(value[0]);
-    });
-
-    getNetworkType().then((value) => {
-      setNetworkType(value);
-    });
-
-    getContractInstance().then((value) => {
-      setContract(value.methods);
-    });
-  }, []);
-
-  useEffect(() => {
-    if (currentAccount && contract) {
-      contract
-        .set(13)
-        .send({ from: currentAccount })
-        .then((value) => setStorageValue(value.transactionHash));
-
-      const newDID = createDID(currentAccount, web3.currenProvider);
-      console.log(newDID);
-      setDid(newDID.did);
-    }
-  }, [currentAccount, contract]);
-
-  useEffect(() => {
-    if (currentAccount && contract) {
-      contract
-        .get()
-        .call({ from: currentAccount })
-        .then((value) => {
-          console.log(value);
-        });
-    }
-  }, [storageValue]);
-
-  const getAccount = async () => {
-    const tempAccount = await web3.eth.getAccounts();
-    return tempAccount;
-  };
-
-  const getNetworkType = async () => {
-    const tempNetworkType = await web3.eth.net.getNetworkType();
-    return tempNetworkType;
-  };
-
-  const getContractInstance = async () => {
-    const tempReturnValue = await web3.eth.net.getId();
-    const deployedNetwork = await SimpleStorageContract.networks[
-      tempReturnValue
-    ];
-    const instance = await new web3.eth.Contract(
-      SimpleStorageContract.abi,
-      deployedNetwork.address
-    );
-    return instance;
-  };
+const App = () => {
 
   return (
-    <React.Fragment>
-      <div className="App">
-        <header className="App-header">
-          Creating my first FULL STACK DAPP
-          <h2>
-            Account: <span className="showAccount">{currentAccount}</span>
-          </h2>
-          <div>NetworkType: {networkType}</div>
-          <div>
-            <h2>Demo DID-created</h2>
-            <p>{did}</p>
-          </div>
-        </header>
-      </div>
+    <div>
+      {/* click this button to create a DID and upload to database and display it*/}
+      {/* <AppInit /> */}
+      
+    </div>
 
-      {/* <div className="App">
-        <h1>Good to Go!</h1>
-        <p>Your Truffle Box is installed and ready.</p>
-        <h2>Smart Contract Example</h2>
-        <p>
-          If your contracts compiled and migrated successfully, below will show
-          a stored value of 5 (by default).
-        </p>
-        <p>
-          Try changing the value stored on <strong>line 40</strong> of App.js.
-        </p>
-        <div>The stored value is: {this.state.storageValue}</div>
-      </div> */}
-    </React.Fragment>
   );
-}
+};
 
 export default App;
