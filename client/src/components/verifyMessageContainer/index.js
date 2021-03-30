@@ -16,6 +16,8 @@ const VerifyMessageContainer = () => {
 
   const verifyMessage = async (e) => {
     e.preventDefault();
+    
+    //setup resolver to resolve Did
     const providerConfig = {
       rpcUrl: "https://ropsten.infura.io/v3/a10e367404ae4c3ab0eae42eba9b05bb",
     };
