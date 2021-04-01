@@ -6,6 +6,7 @@ import ButtonRetrieveDid from "./components/buttonRetrieveDid";
 import SignMessageContainer from "./components/signMessageContainer";
 import VerifyMessageContainer from "./components/verifyMessageContainer";
 import ResolveDidContainer from "./components/resolveDidContainer";
+import SetAttributeContainer from "./components/setAttributeContainer";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
       <SignMessageContainer />
       <VerifyMessageContainer />
       <ResolveDidContainer />
+      <SetAttributeContainer />
     </div>
   );
 };
