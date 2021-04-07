@@ -6,6 +6,8 @@ import Input from "@material-ui/core/Input";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 
+import { stringToBytes32 } from "ethr-did-resolver";
+
 const SetAttributeContainer = () => {
   const [attributeResult, setAttributeResult] = useState(null);
 
@@ -17,22 +19,51 @@ const SetAttributeContainer = () => {
   DidReg.setProvider(web3.currentProvider);
 
   const buttonHandler = async (e) => {
+    let key = "did/svc/HubService";
+    let value = "https://hubs.uport.me";
+
     e.preventDefault();
     let didRegContractInstance = await DidReg.deployed();
-    // const result = await didRegContractInstance.setAttribute("0x722d7ca2905317780e7195119d3257be1aff492b", 0x6469642f7376632f6167656e7400000000000000000000000000000000000000, 0x687474703a2f2f6465762d6d656d6265723a383038302f6170692f76312f696e626f78, 65356000);
-    const resultOwner = await didRegContractInstance.identityOwner("0x9035298a35E1278E165d17077c5F3d68D333CDB1");
-    
-    //Change owner function works//
-    // const result = await didRegContractInstance.changeOwner(
-    //   "0xbCB5bA4AAC9c050183927A7655B82c06158E9854",
-    //   "0xbCB5bA4AAC9c050183927A7655B82c06158E9854",
-    //   { from: "0xbCB5bA4AAC9c050183927A7655B82c06158E9854" }
+    const result = await didRegContractInstance.setAttribute(
+      "0x9035298a35E1278E165d17077c5F3d68D333CDB1",
+      stringToBytes32(key),
+      attributeToHex(key, value),
+      86400,
+      { from: "0x9035298a35E1278E165d17077c5F3d68D333CDB1" }
+    );
+
+    // const resultOwner = await didRegContractInstance.identityOwner(
+    //   "0x9035298a35E1278E165d17077c5F3d68D333CDB1"
     // );
-    // console.log("-----", result); 
-    
-    console.log("------", resultOwner);
-    // setAttributeResult(result);
+
+    //Change owner function works
+    // const result = await didRegContractInstance.changeOwner(
+    //   "0x9035298a35E1278E165d17077c5F3d68D333CDB1",
+    //   "0x9035298a35E1278E165d17077c5F3d68D333CDB1",
+    //   { from: "0x9035298a35E1278E165d17077c5F3d68D333CDB1" }
+    // );
+
+    console.log("-----setAttribute", result);
+    // console.log("------identityOwner", resultOwner);
   };
+
+  function attributeToHex(key, value) {
+    if (Buffer.isBuffer(value)) {
+      return `0x${value.toString("hex")}`;
+    }
+    const match = key.match(/^did\/(pub|auth|svc)\/(\w+)(\/(\w+))?(\/(\w+))?$/);
+    if (match) {
+      const encoding = match[6];
+      // TODO add support for base58
+      if (encoding === "base64") {
+        return `0x${Buffer.from(value, "base64").toString("hex")}`;
+      }
+    }
+    if (value.match(/^0x[0-9a-fA-F]*$/)) {
+      return value;
+    }
+    return `0x${Buffer.from(value).toString("hex")}`;
+  }
 
   return (
     <React.Fragment>
@@ -46,7 +77,7 @@ const SetAttributeContainer = () => {
           </Button>
         </form>
         <div>
-          <p>Result: {attributeResult}</p>
+          
         </div>
       </Container>
     </React.Fragment>
