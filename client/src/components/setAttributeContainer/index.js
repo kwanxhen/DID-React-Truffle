@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import getWeb3 from "../../getWeb3";
 
 import Button from "@material-ui/core/Button";
-import Input from "@material-ui/core/Input";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 
@@ -19,11 +18,15 @@ const SetAttributeContainer = () => {
   DidReg.setProvider(web3.currentProvider);
 
   const buttonHandler = async (e) => {
+    //Attribute key and value that are resolvable can only be in these format.
+    //Check ethr-did-resolver for more info.
     let key = "did/svc/HubService";
     let value = "https://hubs.uport.me";
 
     e.preventDefault();
     let didRegContractInstance = await DidReg.deployed();
+    
+    //Attribute is set to this DID: did:ethr:0x9035298a35E1278E165d17077c5F3d68D333CDB1
     const result = await didRegContractInstance.setAttribute(
       "0x9035298a35E1278E165d17077c5F3d68D333CDB1",
       stringToBytes32(key),
@@ -76,9 +79,7 @@ const SetAttributeContainer = () => {
             Set Attribute
           </Button>
         </form>
-        <div>
-          
-        </div>
+        <div></div>
       </Container>
     </React.Fragment>
   );
