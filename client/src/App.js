@@ -7,6 +7,7 @@ import SignMessageContainer from "./components/signMessageContainer";
 import VerifyMessageContainer from "./components/verifyMessageContainer";
 import ResolveDidContainer from "./components/resolveDidContainer";
 import SetAttributeContainer from "./components/setAttributeContainer";
+import CreateCredentialsContainer from "./components/createCredentialsContainer";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
       <VerifyMessageContainer />
       <ResolveDidContainer />
       <SetAttributeContainer />
+      <CreateCredentialsContainer />
     </div>
   );
 };
